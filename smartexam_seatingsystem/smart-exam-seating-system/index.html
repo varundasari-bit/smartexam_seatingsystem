@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Exam Seating System</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#4F46E5',
+                        accent: '#F59E0B',
+                        success: '#22C55E',
+                        danger: '#EF4444',
+                        'bg-main': '#F9FAFB',
+                        'bg-card': '#FFFFFF',
+                        'bg-alt': '#F3F4F6',
+                        'text-primary': '#111827',
+                        'text-secondary': '#6B7280',
+                        'text-disabled': '#9CA3AF',
+                        border: '#E5E7EB',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar no-print" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <h1>Exam Seating</h1>
+                        <p>Management System</p>
+                    </div>
+                </div>
+                <!-- Sidebar Toggle Button -->
+                <button class="sidebar-toggle" onclick="toggleSidebar()" title="Toggle Sidebar">
+                    <svg id="toggleIcon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <!-- Exam Seating Section -->
+                <div class="nav-section">
+                    <p class="nav-section-title">Exam Seating</p>
+                    
+                    <button onclick="showPage('dashboard')" data-nav="dashboard" class="nav-btn active">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        <span class="nav-text">Dashboard</span>
+                    </button>
+                    
+                    <button onclick="showPage('plan')" data-nav="plan" class="nav-btn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="nav-text">Seating Plan</span>
+                    </button>
+                    
+                    <button onclick="showPage('search')" data-nav="search" class="nav-btn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <span class="nav-text">Seat Lookup</span>
+                    </button>
+                </div>
+
+                <!-- Admin Section -->
+                <div class="nav-section">
+                    <p class="nav-section-title">Admin</p>
+                    
+                    <button onclick="checkAdminAccess('admin')" class="nav-btn">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                        <span class="nav-text">Admin Panel</span>
+                        <svg class="lock-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logoutBtn" onclick="logout()" class="btn btn-secondary w-full hidden">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span class="nav-text">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Dashboard Page -->
+            <div id="dashboard" class="page active max-w-6xl">
+                <div class="mb-8">
+                    <h2 class="page-title">Exam Seating</h2>
+                    <p class="page-subtitle">Smart Examination Seating Management System</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <p class="card-label">Total Rooms</p>
+                                <p class="card-value" id="totalRooms">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <p class="card-label">Total Students</p>
+                                <p class="card-value" id="totalStudents">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <p class="card-label">Available Capacity</p>
+                                <p class="card-value" id="totalCapacity">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Info Cards -->
+                <div class="info-grid">
+                    <div class="card">
+                        <h3>Exam Instructions</h3>
+                        <ul class="instructions-list">
+                            <li>
+                                <span class="bullet"></span>
+                                <span>Students must carry valid Hall Ticket and Identity Card for every examination.</span>
+                            </li>
+                            <li>
+                                <span class="bullet"></span>
+                                <span>Be present in the examination hall at least 30 minutes before exam commencement.</span>
+                            </li>
+                            <li>
+                                <span class="bullet"></span>
+                                <span>No entry allowed after 30 minutes of exam start.</span>
+                            </li>
+                            <li>
+                                <span class="bullet"></span>
+                                <span>Electronic gadgets strictly prohibited inside the hall.</span>
+                            </li>
+                            <li>
+                                <span class="bullet"></span>
+                                <span>Check seating plan carefully for room and bench assignment.</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Page (Combined Rooms & Students) -->
+            <div id="admin" class="page max-w-6xl">
+                <div class="page-header">
+                    <h2 class="section-title">Admin Panel</h2>
+                    <div class="page-header-right">
+                        <button onclick="generatePlan()" class="btn btn-primary">Generate Plan</button>
+                    </div>
+                </div>
+
+                <!-- Rooms Section -->
+                <div class="admin-section mb-8">
+                    <div class="section-header">
+                        <h3 class="subsection-title">Room Management</h3>
+                        <button onclick="clearAllRooms()" class="btn btn-danger btn-sm">Clear All Rooms</button>
+                    </div>
+                    <div id="roomAlert"></div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Block</th>
+                                    <th>Room</th>
+                                    <th>Rows</th>
+                                    <th>Cols</th>
+                                    <th>Benches</th>
+                                    <th>Capacity</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="roomsTableBody">
+                                <tr class="input-row">
+                                    <td><input type="text" id="roomBlock" placeholder="Block A" class="input"></td>
+                                    <td><input type="text" id="roomName" placeholder="Room 101" class="input"></td>
+                                    <td><input type="number" id="roomRows" value="5" min="1" onchange="updateTotalBenches()" class="input input-small"></td>
+                                    <td><input type="number" id="roomCols" value="4" min="1" onchange="updateTotalBenches()" class="input input-small"></td>
+                                    <td><span id="totalBenches" class="text-primary font-semibold">20</span></td>
+                                    <td><input type="number" id="benchCapacity" value="1" min="1" max="3" class="input input-small"></td>
+                                    <td>
+                                        <button onclick="addRoom()" class="btn btn-primary btn-icon">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Students Section -->
+                <div class="admin-section mb-8">
+                    <div class="section-header">
+                        <h3 class="subsection-title">Student Management</h3>
+                        <button onclick="clearAllRanges()" class="btn btn-danger btn-sm">Clear All Students</button>
+                    </div>
+                    <div id="studentAlert"></div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Branch</th>
+                                    <th>Subject</th>
+                                    <th>Year</th>
+                                    <th>Prefix</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Count</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <tr class="input-row">
+                                    <td><input type="text" id="rangeBranch" placeholder="CSE" class="input"></td>
+                                    <td><input type="text" id="rangeSubject" placeholder="Mathematics" class="input"></td>
+                                    <td><input type="text" id="rangeYear" placeholder="3rd Year" class="input"></td>
+                                    <td><input type="text" id="rangePrefix" placeholder="21CS" class="input"></td>
+                                    <td><input type="text" id="rangeStart" value="01" class="input input-small"></td>
+                                    <td><input type="text" id="rangeEnd" value="60" class="input input-small"></td>
+                                    <td><span id="rangeStrength" class="text-primary font-semibold">60</span></td>
+                                    <td>
+                                        <button onclick="addRange()" class="btn btn-primary btn-icon">
+                                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Seating Plan Page -->
+            <div id="plan" class="page max-w-7xl">
+                <div class="mb-6">
+                    <h2 class="section-title">Seating Plan</h2>
+                    <p class="page-subtitle">Generated allocation across all rooms</p>
+                </div>
+
+                <div id="planAlert"></div>
+                <div id="planContent"></div>
+            </div>
+
+            <!-- Search Page -->
+            <div id="search" class="page">
+                <div class="search-container">
+                    <div class="search-header">
+                        <h2 class="section-title">Seat Lookup</h2>
+                        <p class="page-subtitle">Find student seat by roll number</p>
+                    </div>
+
+                    <div class="search-box">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Enter Roll Number (e.g. 21CS01)" onkeyup="searchSeat()" class="search-input">
+                    </div>
+
+                    <div id="searchResult"></div>
+
+                    <div id="searchWarning" class="alert alert-warning hidden">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <div>
+                            <p class="font-semibold text-sm">Plan not generated</p>
+                            <p class="text-sm mt-0.5">Generate a seating plan first before searching for seats.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h3 class="modal-title">Admin Access</h3>
+                <p class="modal-subtitle">Enter password to continue</p>
+            </div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" class="input">
+                    <p id="loginError" class="form-error hidden">Incorrect password. Please try again.</p>
+                </div>
+                <button type="submit" class="btn btn-primary w-full">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application JavaScript Modules -->
+    <!-- Config & Utilities (Load First) -->
+    <script src="js/modules/config.js"></script>
+    <script src="js/modules/utils.js"></script>
+    
+    <!-- Core Modules -->
+    <script src="js/modules/navigation.js"></script>
+    <script src="js/modules/auth.js"></script>
+    <script src="js/modules/dashboard.js"></script>
+    
+    <!-- Feature Modules -->
+    <script src="js/modules/rooms.js"></script>
+    <script src="js/modules/students.js"></script>
+    <script src="js/modules/exams.js"></script>
+    <script src="js/modules/seating.js"></script>
+    <script src="js/modules/search.js"></script>
+    
+    <!-- Main App Entry Point (Load Last) -->
+    <script src="js/app.js"></script>
+</body>
+</html>

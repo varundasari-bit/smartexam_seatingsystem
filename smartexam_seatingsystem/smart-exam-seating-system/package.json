@@ -1,0 +1,34 @@
+{
+  "name": "smart-exam-seating-system",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Smart Exam Seating Plan Generation and Management System - Pure HTML/CSS/JS with Node.js",
+  "main": "server.js",
+  "bin": {
+    "exam-seating": "./server.js"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --check server.js"
+  },
+  "keywords": [
+    "exam-seating",
+    "seating-allocation",
+    "round-robin",
+    "education",
+    "examination",
+    "offline",
+    "standalone"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
+}
